@@ -1,0 +1,42 @@
+/***************************Passos-Padrões-Backend***************************/
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Resumo
+
+Os passos essenciais em qualquer projeto Node.js web são:
+
+    Criar servidor
+    Configurar rotas
+    Iniciar servidor
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Configuração de Dependências
+
+    Importar Express
+    Importar Path
+    Importar BodyParser
+
+2. Configuração do Servidor
+
+    Criar Servidor
+    Configurar JSON
+    Configurar Formulário
+
+3. Configuração de Views e Templates
+
+    Adicionar Motor Templates
+    Definir Visualização HTML
+    Definir Pasta Views
+
+4. Configuração de Arquivos Estáticos
+
+    Configurar Arquivos Estáticos
+
+5. Definição de Rotas
+
+    Criar Rota Principal
+
+6. Inicialização do Servidor
+
+    Iniciar Servidor
