@@ -1,51 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!--Importando Fontes-->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-
-    <!--?-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <!--Importando Estilo CSS-->
-    <link rel="stylesheet" href="../public/style.css" />
-
-    <!--Título da Página-->
-    <title>Home</title>
-</head>
-<body>
-    <header>
-        <div class="center">
-            <div class="logo">
-                <h2><span style="font-weight: lighter;">Danki</span><b>News</b></h2>
-            </div><!--logo-->
-
-            <div class="form-busca">
-                <form>
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                    <input type="text" placeholder="Busca..." name="busca" /> 
-                </form>
-            </div><!--form-busca-->
-
-        </div><!--center-->
-    </header>
-
+    <%- include('partials/header.html') %>
     <section class="noticia-destaque">
         <div class="center">
             <div class="img-destaque">
                 <div class="overlay-destaque"></div>
                 <div class="title-destaque-descricao">
                     <h2>Quer Fugir das Praias de Verão?</h2>
-                    <p>Duis finibus neque sit amet nisl egestas, in hendrerit odio dapibus. Duis sodales mauris feugiat, semper urna sed, eleifend justo. In vitae eros ac magna pharetra porta. In hac habitasse platea dictumst. Nullam lacus libero, ultrices eget tincidunt a, facilisis ut enim. Aenean mauris lectus, ultricies at libero a, aliquam venenatis neque. </p>
-                </div>
-                <img src="../public/images/lake.jpg" />
-            </div>
-        </div>
-    </section>
+                    <p>Duis finibus neque sit amet nisl egestas, in hendrerit odio dapibus. Duis sodales mauris feugiat, semper urna sed...</p>
+                </div><!--tittle-destaque-descricao-->
+                <img src="../public/images/lake.jpg" /><!--img-fundo-destaque-->
+            </div><!--img-destaque-->
+        </div><!--center-->
+    </section><!--notica-destaque-->
+
+    <section class="outras-noticias">
+        <div class="title-outras-noticias">
+            <h2>Últimas Notícias</h2>
+            <br>
+            <div class="center">
+                <div class="ultimas">
+                    <div class="box-ultima-single">
+                        <img src="../public/images/noticia.png" />
+                        <div class="conteudo-noticia-single">
+                            <h3>Natureza e Geral</h3>
+                            <h2>Como Encarar o Surf em Floripa</h2>
+                            <p>A água gelada e o vento pode acabar com a sua felicidade de ir para a água. Cientistas afirmam que a chance de hipotermia é real e você precisa se cuidar. Veja como.</p>
+                            <a href="/encarar-o-surf">Saiba mais</a>
+                        </div><!--conteudo-noticia-single-->
+                    </div><!--box-ultima-single-->
+
+                    <div class="box-ultima-single">
+                        <img src="../public/images/noticia.png" />
+                        <div class="conteudo-noticia-single">   
+                            <h3>Natureza e Geral</h3>
+                            <h2>Como Encarar o Surf em Floripa</h2>
+                            <p>A água gelada e o vento pode acabar com a sua felicidade de ir para a água. Cientistas afirmam que a chance de hipotermia é real e você precisa se cuidar. Veja como.</p>
+                            <a href="/encarar-o-surf">Saiba mais</a>
+                        </div><!--conteudo-noticia-single-->
+                    </div><!--box-ultima-single-->
+                </div><!--ultimas-->    
+
+                <div class="mais-lidas">
+                    <h3>Mais Lidas</h3>
+                    <div class="mais-lidas-noticias">
+                        <div class="mais-lidas-noticias-single">
+                            <img src="../public/images/natureza-small.png" />
+                            <div class="texto-mais-lidas-single">
+                                <h4>Natureza</h4>
+                                <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
+                                <a href="/encarar-o-surf">Saiba mais</a>
+                            </div><!--texto-mais-lidas-single-->
+                        </div><!--mais-lidas-noticias-single-->
+
+                        <div class="mais-lidas-noticias-single">
+                            <img src="../public/images/natureza-small.png" />
+                            <div class="texto-mais-lidas-single">
+                                <h4>Natureza</h4>
+                                <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
+                                <a href="/encarar-o-surf">Saiba mais</a>
+                            </div><!--texto-mais-lidas-single-->
+                        </div><!--mais-lidas-noticias-single-->
+
+                        <div class="mais-lidas-noticias-single">
+                            <img src="../public/images/natureza-small.png" />
+                            <div class="texto-mais-lidas-single">
+                                <h4>Natureza</h4>
+                                <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
+                                <a href="/encarar-o-surf">Saiba mais</a>
+                            </div><!--texto-mais-lidas-single-->
+                        </div><!--mais-lidas-noticias-single-->
+
+                        <div class="mais-lidas-noticias-single">
+                            <img src="../public/images/natureza-small.png" />
+                            <div class="texto-mais-lidas-single">
+                                <h4>Natureza</h4>
+                                <p>A importância da floresta do ártico para a biodiversidade mundial. Qual o impacto o degelo na fauna e flora?</p>
+                                <a href="/encarar-o-surf">Saiba mais</a>
+                            </div><!--texto-mais-lidas-single-->
+                        </div><!--mais-lidas-noticias-single-->
+                    </div><!--mais-lidas-noticias-->
+                </div><!--mais-lidas-->
+            </div><!--center-->
+        </div><!--title-outras-noticias-->
+    </section><!--outras-noticias-->
+
+<%- include('partials/footer.html') %>
     
 </body>
 </html>

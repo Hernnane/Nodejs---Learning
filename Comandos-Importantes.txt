@@ -1,0 +1,2 @@
+/****************************Comandos Importantes****************************\
+<%- include('*endereço da pagina que tu quer puxar*') %>

@@ -2,19 +2,21 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Lato", sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
 
 header{
     padding: 8px 0;
     background-color: #0aacdc;
+    text-align: center;
 }
 
 .center{
-    max-width: 1100px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 0 2%;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .logo{
@@ -88,10 +90,20 @@ section.noticia-destaque > .center{
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 10px;
+    padding: 40px;
     max-width: 600px;
     color: white;
     z-index: 2;
+}
+
+.title-destaque-descricao h2{
+    font-size: 64px;
+    margin: 20px 0;
+}
+
+.title-destaque-descricao p{
+    font-weight: lighter;
+    font-size: 16px;
 }
 
 .overlay-destaque{
@@ -104,3 +116,177 @@ section.noticia-destaque > .center{
     border-radius: 20px;
     z-index: 1;
 }
+
+section.outras-noticias{
+    background-color: #EAEAEA;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+section.outras-noticias h2{
+    font-size: 54px;
+}
+
+.ultimas{
+    display: flex;
+    width: 60%;
+    padding: 0 10px;
+    flex-wrap: wrap;
+}
+
+.box-ultima-single{
+    text-align: left;
+    width: 48%;
+    margin-right: 2%;
+    background-color: white;
+    border-radius: 10px;
+    padding-bottom: 20px;
+    height: 100%;
+}
+
+.box-ultima-single img{
+    width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.box-ultima-single h3{
+    font-size: 16px;
+    color: #33439B;
+    margin: 20px 0;
+}
+
+.box-ultima-single h2{
+    font-size: 28px !important;
+    color: #303336;
+}
+
+.box-ultima-single p{
+    font-size: 16px;
+    color: #7B8591;
+    margin: 20px 0;
+}
+
+.box-ultima-single a{
+    display: block;
+    width: 181px;
+    height: 56px;
+    border: 1px solid #EBEBEB;
+    text-decoration: none;
+    color: #0AACDC;
+    border-radius: 10px;
+    line-height: 56px;
+    text-align: center;
+    font-size: 19px;
+
+}
+
+.conteudo-noticia-single{
+    padding: 20px;
+}
+
+.mais-lidas{
+    width: 40%;
+    height: 100%;
+    background-color: white;
+}
+
+.mais-lidas > h3{
+    background-color: #3F51B5;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.mais-lidas-noticias-single{
+    display: flex;
+    padding: 20px;
+    text-align: left;
+    flex-wrap: wrap;
+}
+
+.mais-lidas-noticias-single img{
+    width: 30%;
+}
+
+.mais-lidas-noticias-single .texto-mais-lidas-single{
+    width: 70%;
+    padding:0 20px;
+}
+
+.texto-mais-lidas-single h4{
+    color: #40BE65;
+    letter-spacing: 3.2px;
+}
+
+.texto-mais-lidas-single p{
+    font-size: 14px;
+    color: #7B8591;
+}
+
+.texto-mais-lidas-single a{
+    margin-top: 10px;
+    display: block;
+    width: 121px;
+    height: 36px;
+    border: 1px solid #EBEBEB;
+    text-decoration: none;
+    color: #0AACDC;
+    border-radius: 10px;
+    line-height: 36px;
+    text-align: center;
+    font-size: 14px;
+}
+
+footer{
+    background-color: #0aacdc;
+    text-align: center;
+    color: white;
+    padding: 8px 0;
+}
+
+@media screen and (max-width: 768px) {
+    /* Empilha os blocos das notícias */
+    .ultimas {
+        display: block; /* Remove o flex, garante o empilhamento */
+        width: 100%;
+    }
+
+    .box-ultima-single {
+        display: block; /* Remove qualquer flexbox */
+        width: 100%; /* Ocupa toda a largura disponível */
+        margin-bottom: 20px; /* Adiciona espaçamento entre as divs */
+        background-color: white; /* Fundo branco */
+        border-radius: 10px; /* Bordas arredondadas */
+        overflow: hidden; /* Garante que nenhum conteúdo vaze */
+    }
+
+    .box-ultima-single img {
+        display: block; /* Garante que a imagem não "flutue" */
+        width: 100%; /* Imagem ocupa toda a largura */
+        height: auto; /* Proporção preservada */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .conteudo-noticia-single {
+        display: block; /* Remove comportamento flexível */
+        padding: 20px; /* Adiciona espaçamento interno */
+        height: auto; /* Ajusta à altura do conteúdo */
+    }
+
+    .conteudo-noticia-single h3 {
+        margin-bottom: 10px; /* Espaço entre o título e os outros elementos */
+    }
+
+    .conteudo-noticia-single button {
+        display: block; /* Garante que o botão ocupe a largura desejada */
+        margin-top: 10px; /* Espaço acima do botão */
+    }
+}
+
+
+
+
