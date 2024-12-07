@@ -4,10 +4,27 @@ const express = require('express');
 const path = require('path');
 // Importa o módulo BodyParser, usado no Express para fazer o parsing (processamento) dos dados no corpo da requisição HTTP
 var bodyparser = require('body-parser');
-/******************************************************************************************************************************************************** */
+// Importa o módulo Mongoose, usado para se conectar com o banco de dados MongoDB
+const mongoose = require('mongoose');
 
+/******************************************************************************************************************************************************** */
 // Cria uma instância da aplicação Express, representando o servidor
 const app = express();
+
+// Importa o MÓDULO Posts do arquivo Posts.js que criamos e determinamos o Schema("tabela")
+const Posts = require('./Posts.js');
+
+// String de conexão
+const uri = 'mongodb+srv://root:Ao5nBZERzTHda3bW@cluster0.odf59.mongodb.net/Hernnane?retryWrites=true&w=majority';
+
+// Conectando ao MongoDB
+mongoose.connect(uri)
+  .then(() => {
+    console.log('Conectado com sucesso');
+  })
+  .catch(err => {
+    console.log('Erro ao conectar ao MongoDB:', err.message);
+  });
 
 // Configura o body-parser para processar dados JSON
 // Quando o cliente enviar dados no formato JSON, o Express os converte em um objeto JavaScript
@@ -38,18 +55,57 @@ app.set('views', path.join(__dirname, '/pages'));
 
 /******************************************************************************************************************************************************** */
 
-app.get('/', (req, res)=>{
-    console.log(req.query);
+// Rota principal
+app.get('/', async (req, res) => {
+    try { // Bloco main
+        if (req.query.busca == null) { // Verifica se existe um filtro de pesquisa na página
+            // Busca todos os posts no banco de dados e os ordena pelo _id em ordem decrescente
+            const posts = await Posts.find({}).sort({ '_id': -1 });
 
-    if(req.query.busca == null){
-        res.render('home',{});
-    } else{
-        res.render('single', {});
+            // Mapeia (atualiza/adapta) os posts para adicionar uma descrição curta
+            const formattedPosts = posts.map(val => ({
+                titulo: val.titulo,
+                conteudo: val.conteudo,
+                descricaoCurta: val.conteudo.substring(0, 100), // Substring para pegar os primeiros 100 caracteres
+                imagem: val.imagem,
+                slug: val.slug,
+                categoria: val.categoria
+            }));
+
+            // Renderiza a página 'home' com os posts formatados
+            res.render('home', { posts: formattedPosts });
+        } else {
+            // Renderiza a página de busca caso o parâmetro de busca seja enviado
+            res.render('busca', {});
+        }
+    } catch (err) {
+        console.error('Erro ao buscar posts:', err);
+        res.status(500).send('Erro interno no servidor');
     }
 });
 
-app.get('/:slug', (req,res)=>{
-    res.render('single', {});
+
+// Rota para exibir o post individual baseado no 'slug'
+app.get('/:slug', async (req, res) => {
+    try {
+        // Busca o post baseado no slug e incrementa a contagem de visualizações
+        const post = await Posts.findOneAndUpdate(
+            { slug: req.params.slug }, // Critério de busca
+            { $inc: { views: 1 } },   // Incrementa a contagem de visualizações
+            { new: true }             // Retorna o documento atualizado
+        );
+
+        // Verifica se o post foi encontrado
+        if (!post) {
+            return res.status(404).send('Post não encontrado');
+        }
+
+        // Renderiza a página 'single' com os dados do post
+        res.render('single', { noticia: post });
+    } catch (err) {
+        console.error('Erro ao buscar o post:', err);
+        res.status(500).send('Erro interno no servidor');
+    }
 });
 
 
