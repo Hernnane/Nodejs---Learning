@@ -15,7 +15,7 @@ const app = express();
 const Posts = require('./Posts.js');
 
 // String de conexão
-const uri = 'mongodb+srv://root:Ao5nBZERzTHda3bW@cluster0.odf59.mongodb.net/Hernnane?retryWrites=true&w=majority';
+const uri = 'mongodb+srv://root:dqRAzK6CiJg3FaiU@cluster0.odf59.mongodb.net/Hernnane?retryWrites=true&w=majority';
 
 // Conectando ao MongoDB
 mongoose.connect(uri)
@@ -61,6 +61,8 @@ app.get('/', async (req, res) => {
         if (req.query.busca == null) { // Verifica se existe um filtro de pesquisa na página
             // Busca todos os posts no banco de dados e os ordena pelo _id em ordem decrescente
             const posts = await Posts.find({}).sort({ '_id': -1 });
+            // Busca todos os posts no banco de dados e os ordena pela view em ordem decrescente
+            const postsTop = await Posts.find({}).sort({'views': -1}).limit(3);
 
             // Mapeia (atualiza/adapta) os posts para adicionar uma descrição curta
             const formattedPosts = posts.map(val => ({
@@ -72,11 +74,28 @@ app.get('/', async (req, res) => {
                 categoria: val.categoria
             }));
 
+            // Mapeia (atualiza/adapta) os postsTop para adicionar uma descrição curta
+            const orderedPosts = postsTop.map(val => ({
+                titulo: val.titulo,
+                conteudo: val.conteudo,
+                descricaoCurta: val.conteudo.substring(0, 100), // Substring para pegar os primeiros 100 caracteres
+                imagem: val.imagem,
+                slug: val.slug,
+                categoria: val.categoria,
+                views: val.views
+            }));
+
             // Renderiza a página 'home' com os posts formatados
-            res.render('home', { posts: formattedPosts });
+            res.render('home', { posts: formattedPosts, postsTop: orderedPosts });
         } else {
+
             // Renderiza a página de busca caso o parâmetro de busca seja enviado
-            res.render('busca', {});
+            // Pode-se criar uma página de erro
+
+            const posts = await Posts.find({titulo: {$regex: req.query.busca, $options: "i"}});
+            console.log(posts);
+            res.render('busca', { posts: posts });
+
         }
     } catch (err) {
         console.error('Erro ao buscar posts:', err);
@@ -100,8 +119,21 @@ app.get('/:slug', async (req, res) => {
             return res.status(404).send('Post não encontrado');
         }
 
+        // Enviando as noticias mais lidas pra tela individual
+        const postsML = await Posts.find({}).sort({'views': -1}).limit(3);
+
+        const postMaisLidas = postsML.map(val => ({
+            titulo: val.titulo,
+                conteudo: val.conteudo,
+                descricaoCurta: val.conteudo.substring(0, 100), // Substring para pegar os primeiros 100 caracteres
+                imagem: val.imagem,
+                slug: val.slug,
+                categoria: val.categoria,
+                views: val.views
+        }));
+
         // Renderiza a página 'single' com os dados do post
-        res.render('single', { noticia: post });
+        res.render('single', { noticia: post, postsML: postMaisLidas });
     } catch (err) {
         console.error('Erro ao buscar o post:', err);
         res.status(500).send('Erro interno no servidor');
