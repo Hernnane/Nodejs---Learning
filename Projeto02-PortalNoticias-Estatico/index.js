@@ -61,7 +61,7 @@ app.get('/', async (req, res) => {
         if (req.query.busca == null) { // Verifica se existe um filtro de pesquisa na página
             // Busca todos os posts no banco de dados e os ordena pelo _id em ordem decrescente
             const posts = await Posts.find({}).sort({ '_id': -1 });
-            // Busca todos os posts no banco de dados e os ordena pela view em ordem decrescente
+            // Busca todos os posts no banco de dados, ordena pela view em ordem decrescente e limita o máximo de posts a serem exibidos
             const postsTop = await Posts.find({}).sort({'views': -1}).limit(3);
 
             // Mapeia (atualiza/adapta) os posts para adicionar uma descrição curta
@@ -92,9 +92,24 @@ app.get('/', async (req, res) => {
             // Renderiza a página de busca caso o parâmetro de busca seja enviado
             // Pode-se criar uma página de erro
 
-            const posts = await Posts.find({titulo: {$regex: req.query.busca, $options: "i"}});
-            console.log(posts);
-            res.render('busca', { posts: posts });
+            // Procura no banco de dados os posts que tenham o título igual o conteúdo pesquisado / &regex => operador  de buscas por expressões / $options => define se será case sensitive-insensitive
+            const postsPesquisa = await Posts.find({titulo: {$regex: req.query.busca, $options: "i"}});       
+
+            //Mapeia (atualiza/adapta) os postsPesquisa para adicionar uma descrição mais curta
+            const postsP = postsPesquisa.map(val => ({
+                titulo: val.titulo,
+                conteudo: val.conteudo,
+                descricaoCurta: val.conteudo.substring(0, 300), // Substring para pegar os primeiros 100 caracteres
+                imagem: val.imagem,
+                slug: val.slug,
+                categoria: val.categoria,
+                views: val.views
+            }));
+
+            // Exibe no console os posts que correspondem à pesquisa do usuário
+            console.log(postsPesquisa);
+            // Envia os postsPesquisa para a página HTML 'busca'
+            res.render('busca', { postsPesquisa: postsP, contagem: postsPesquisa.length });
 
         }
     } catch (err) {
