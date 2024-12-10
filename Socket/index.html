@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO Chat</title>
+    <style>
+      /* Define o estilo básico do corpo da página */
+      body {
+        margin: 0;
+        padding-bottom: 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      /* Estilo do formulário fixado na parte inferior */
+      #form {
+        background: rgba(0, 0, 0, 0.15);
+        padding: 0.25rem;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        height: 3rem;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Estilo do campo de entrada de texto */
+      #input {
+        border: none;
+        padding: 0 1rem;
+        flex-grow: 1;
+        border-radius: 2rem;
+        margin: 0.25rem;
+      }
+
+      /* Remove o contorno padrão quando o campo de texto está em foco */
+      #input:focus {
+        outline: none;
+      }
+
+      /* Estilo do botão dentro do formulário */
+      #form > button {
+        background: #333;
+        border: none;
+        padding: 0 1rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        outline: none;
+        color: #fff;
+      }
+
+      /* Estilo da lista de mensagens */
+      #messages {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Estilo de cada item (mensagem) da lista */
+      #messages > li {
+        padding: 0.5rem 1rem;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Elemento para exibir as mensagens -->
+    <ul id="messages"></ul>
+
+    <!-- Formulário de envio de mensagens -->
+    <form id="form" action="">
+      <input id="input" autocomplete="off" />
+      <button>Send</button>
+    </form>
+
+    <!-- Inclui a biblioteca Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      // Instancia um cliente Socket.IO
+      var socket = io();
+
+      // Solicita o nome do usuário
+      var nome = prompt('Qual seu nome?');
+
+      // Envia o evento "new user" ao servidor, passando o nome do usuário
+      socket.emit('new user', nome);
+
+      // Recebe a resposta do servidor sobre o registro do novo usuário
+      socket.on('new user', function (data) {
+        if (data.success) {
+          alert('Bem-vindo ao Danki Chat ' + nome);
+        } else {
+          alert('Já existe usuário com este nome...');
+          // Redireciona para a página inicial caso o nome já esteja em uso
+          window.location.href = "/";
+        }
+      });
+
+      // Elementos do DOM para exibir mensagens e manipular o formulário
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+
+      // Evento para tratar o envio de mensagens pelo formulário
+      form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Previne o comportamento padrão do formulário
+        if (input.value) {
+          // Envia a mensagem para o servidor com o nome do usuário
+          socket.emit('chat message', { msg: input.value, nome: nome });
+          input.value = ''; // Limpa o campo de entrada
+        }
+      });
+
+      // Recebe mensagens do servidor e as exibe no chat
+      socket.on('chat message', function (obj) {
+        var item = document.createElement('li'); // Cria um novo elemento de lista
+
+        // Define estilos diferentes para mensagens do próprio usuário
+        if (obj.nome == nome) {
+          item.style.backgroundColor = 'gray';
+          item.textContent = obj.nome + ' disse: ' + obj.msg;
+        } else {
+          item.textContent = obj.nome + ' disse: ' + obj.msg;
+        }
+
+        // Adiciona a mensagem à lista e rola a página para o final
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
+  </body>
+</html>
