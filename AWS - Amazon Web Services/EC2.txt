@@ -1,0 +1,16 @@
+**************************************EC2 - ELASTIC COMPUTE CLOUD**************************************
+-> É um serviço da AWS (Amazon Web Services);
+-> Usado para: hospedar um site | Rodar uma aplicação | Criar seu próprio servidor
+-> Funcionamento: 
+	* Escolha da máquina virtual (capacidade necessária do "computador virtual" {servidor} para rodar sua aplicação);
+	* Configuração (Escolhe o sistema operacional | Instala as "dependências");
+	* Acesso (Acesso remoto | Internet).
+
+EC2 - Elastic Compute Cloud {
+	=> Flexibilidade: Escolha o sistema operacional, instale o que quiser e configure como precisar.
+	=> Escalabilidade: Pode aumentar ou diminuir o poder do servidor conforme sua necessidade.
+	=> Custo-benefício: Paga somente pelo tempo que a máquina estiver ligada.
+	=> Alta disponibilidade: A AWS garante que seu servidor estará sempre disponível em várias partes do mundo.
+}
+
+OBS = Instância => Servidor !

@@ -54,6 +54,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, '/pages'));
 
 /******************************************************************************************************************************************************** */
+/* CONFUGURAÇÃO DAS ROTAS DO SITE */
 
 // Rota principal
 app.get('/', async (req, res) => {
