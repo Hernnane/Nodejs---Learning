@@ -14,6 +14,9 @@ const app = express();
 // Importa o MÓDULO Posts do arquivo Posts.js que criamos e determinamos o Schema("tabela")
 const Posts = require('./Posts.js');
 
+// Importa o módulo express-session, usado para dados persistentes | armazena informações necessárias Ex: login/senha
+var session = require('express-session');
+
 // String de conexão
 const uri = 'mongodb+srv://root:dqRAzK6CiJg3FaiU@cluster0.odf59.mongodb.net/Hernnane?retryWrites=true&w=majority';
 
@@ -35,6 +38,14 @@ app.use(bodyparser.json());
 // 'extended: true' permite objetos mais complexos (arrays e objetos dentro do formulário)
 app.use(bodyparser.urlencoded({
     extended: true
+}));
+
+// Configura o session dentro da aplicação express
+app.use( session ({
+    secret: 'keyboard cat',     // Define uma chave secreta usada para assinar a sessão
+    //resave: false,              // A sessão somente será salva caso alguma alteração seja feita
+    //saveUninitialized: true,    // Define que uma sessão não inicializada (sem dados) também será salva
+    cookie: {maxAge: 60000}      // O cookie somente será enviado ao servidor se a conexão for segura
 }));
 
 // Configura o motor de visualização para renderizar arquivos HTML com o EJS
@@ -154,6 +165,43 @@ app.get('/:slug', async (req, res) => {
         console.error('Erro ao buscar o post:', err);
         res.status(500).send('Erro interno no servidor');
     }
+});
+
+// Criando um array dee usuários (para o login sem bando de dados) *login/senha*
+var usuarios = [
+    {
+        login: 'hernnane',
+        senha: '123456'
+    },
+
+    {
+        login: 'caioba',
+        senha: '123456'
+    },
+
+    {
+        login: 'guido',
+        senha: '123456'
+    },
+];
+
+app.post('/admin/login', (req,res)=>{
+    usuarios.map(function(val){
+        if(val.login == req.body.login && val.senha == req.body.senha){
+            req.session.login = 'Hernnane';
+        }
+    })
+    res.redirect('/admin/login');
+});
+
+// Rota de login (express-session)
+app.get('/admin/login', (req,res)=>{
+    if(req.session.login == null){
+        res.render('admin-login');
+    } else{
+        res.render('admin-panel');
+    }
+    
 });
 
 
