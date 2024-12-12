@@ -25,7 +25,7 @@
                         <!--Looping for(ultimas single)-->
                         <% for(let i = 1; i < posts.length; i++){ %>
                             <div class="box-ultima-single">
-                                <img src="<%= posts[i].imagem %>" />
+                                <img src="<%= posts[i].imagem || '/Projeto02-PortalNoticias-Estatico/public/images/perfil-padrao.png' %>" />
                                 <div class="conteudo-noticia-single">
                                     <h3><%= posts[i].categoria %></h3>
                                     <h2><%= posts[i].titulo %></h2>

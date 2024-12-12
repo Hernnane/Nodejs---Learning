@@ -75,6 +75,7 @@ app.get('/', async (req, res) => {
             const posts = await Posts.find({}).sort({ '_id': -1 });
             // Busca todos os posts no banco de dados, ordena pela view em ordem decrescente e limita o máximo de posts a serem exibidos
             const postsTop = await Posts.find({}).sort({'views': -1}).limit(3);
+            console.log(postsTop);
 
             // Mapeia (atualiza/adapta) os posts para adicionar uma descrição curta
             const formattedPosts = posts.map(val => ({
@@ -185,6 +186,7 @@ var usuarios = [
     },
 ];
 
+// Rota de login (express-session) POST
 app.post('/admin/login', (req,res)=>{
     usuarios.map(function(val){
         if(val.login == req.body.login && val.senha == req.body.senha){
@@ -194,7 +196,7 @@ app.post('/admin/login', (req,res)=>{
     res.redirect('/admin/login');
 });
 
-// Rota de login (express-session)
+// Rota de login (express-session) GET
 app.get('/admin/login', (req,res)=>{
     if(req.session.login == null){
         res.render('admin-login');
@@ -204,6 +206,24 @@ app.get('/admin/login', (req,res)=>{
     
 });
 
+// Rota de cadastro de notícias - POST
+app.post('/admin/cadastro', (req,res)=>{
+    console.log(req.body);
+    Posts.create({
+        titulo: req.body.titulo_noticia,
+        imagem: req.body.url_imagem,
+        categoria: 'Nenhuma',
+        conteudo: req.body.noticia,
+        slug: req.body.slug,
+        autor: 'Admin',
+        views: 0
+    });
+    res.send("Cadastrado com sucesso!");
+});
+
+app.get('/admin/deletar/:id', (req,res)=>{
+    res.send("Deletar a notícia com id: " + req.params.id);
+});
 
 /************************************************************************************************************************************************************ */
 // Inicia o servidor na porta 5000
