@@ -6,6 +6,10 @@ const path = require('path');
 var bodyparser = require('body-parser');
 // Importa o módulo Mongoose, usado para se conectar com o banco de dados MongoDB
 const mongoose = require('mongoose');
+// Importa o módulo fileUpload
+const fileUpload = require('express-fileupload');
+// Importa o módulo FileSystem
+const fs = require('fs');
 
 /******************************************************************************************************************************************************** */
 // Cria uma instância da aplicação Express, representando o servidor
@@ -63,6 +67,12 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // Define o diretório onde as views (arquivos HTML/EJS) estão localizadas
 // __dirname refere-se ao diretório atual, e '/views' é a pasta onde os templates ficam
 app.set('views', path.join(__dirname, '/pages'));
+
+// Importa o módulo fileUpload que fará o processamento dos arquivos do projeto
+app.use(fileUpload({
+    useTempFiles: true, // Arquivos serão armazenados temporariamente no disco, e não somente na memória
+    tempFileDir: path.join(__dirname, 'temp') // Define o diretório onde os arquivos serão mantidos temporariamente (seta o caminho do diretório)
+}));
 
 /******************************************************************************************************************************************************** */
 /* CONFUGURAÇÃO DAS ROTAS DO SITE */
@@ -228,10 +238,21 @@ app.get('/admin/login', async (req, res) => {
 
 // Rota de cadastro de notícias - POST
 app.post('/admin/cadastro', (req,res)=>{
-    console.log(req.body);
+    //console.log(req.body);
+
+    let formato = req.files.arquivo.name.split('.'); // Divide o caminho do arquivo recebido, separando o nome por '.'
+    var imagem = new Date().getTime()+'.jpg';
+
+    // Bloco if para saber se o arquivo tem extensão jpg
+    if(formato[formato.length - 1] =="jpg"){ // formato.length -1 => pega a última posição do array gerado pela divisão de palavras salva na variável formatos 
+        req.files.arquivo.mv(__dirname+'/public/images/'+imagem); // mv() => função para mover o arquivo para outro diretório | date().getTime() está sendo usado para adicionar um nome único para o arquivo salvo
+    } else{
+        fs.unlinkSync(req.files.arquivo.tempFilePath); // unlinkSync => função para excluir um arquivo | tempFilePath => seleciona o arquivo temporário que foi gerado anteriormente
+    }
+
     Posts.create({
         titulo: req.body.titulo_noticia,
-        imagem: req.body.url_imagem,
+        imagem: 'http://localhost:5000/public/images/'+imagem,
         categoria: 'Nenhuma',
         conteudo: req.body.noticia,
         slug: req.body.slug,
