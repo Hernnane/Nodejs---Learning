@@ -75,7 +75,6 @@ app.get('/', async (req, res) => {
             const posts = await Posts.find({}).sort({ '_id': -1 });
             // Busca todos os posts no banco de dados, ordena pela view em ordem decrescente e limita o máximo de posts a serem exibidos
             const postsTop = await Posts.find({}).sort({'views': -1}).limit(3);
-            console.log(postsTop);
 
             // Mapeia (atualiza/adapta) os posts para adicionar uma descrição curta
             const formattedPosts = posts.map(val => ({
@@ -197,14 +196,35 @@ app.post('/admin/login', (req,res)=>{
 });
 
 // Rota de login (express-session) GET
-app.get('/admin/login', (req,res)=>{
-    if(req.session.login == null){
-        res.render('admin-login');
-    } else{
-        res.render('admin-panel');
+app.get('/admin/login', async (req, res) => {
+    try {
+        // Aguarda a busca das notícias no banco de dados
+        const posts = await Posts.find({}).sort({ '_id': -1 });
+
+        // Remapeia/adapta o conteúdo dos posts
+        const formattedPosts = posts.map(val => ({
+            id: val._id,
+            titulo: val.titulo,
+            conteudo: val.conteudo,
+            descricaoCurta: val.conteudo.substring(0, 100), // Substring para pegar os primeiros 100 caracteres
+            imagem: val.imagem,
+            slug: val.slug,
+            categoria: val.categoria
+        }));
+
+        // Verifica se o usuário está logado
+        if (req.session.login == null) {
+            res.render('admin-login'); // Renderiza a página de login caso não esteja logado
+        } else {
+            res.render('admin-panel', { posts: formattedPosts }); // Renderiza o painel com os posts
+        }
+    } catch (err) {
+        console.error('Erro ao carregar a página de login/admin:', err); // Log de erros no servidor
+        res.status(500).send('Erro interno no servidor'); // Retorna uma mensagem de erro ao cliente
     }
-    
 });
+
+
 
 // Rota de cadastro de notícias - POST
 app.post('/admin/cadastro', (req,res)=>{
@@ -218,11 +238,13 @@ app.post('/admin/cadastro', (req,res)=>{
         autor: 'Admin',
         views: 0
     });
-    res.send("Cadastrado com sucesso!");
+    res.redirect("/admin/login");
 });
 
 app.get('/admin/deletar/:id', (req,res)=>{
-    res.send("Deletar a notícia com id: " + req.params.id);
+    Posts.deleteOne({_id:req.params.id}).then(function(){
+        res.redirect('/admin/login');
+    });
 });
 
 /************************************************************************************************************************************************************ */

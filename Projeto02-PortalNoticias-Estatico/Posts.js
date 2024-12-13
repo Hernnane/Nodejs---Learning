@@ -12,7 +12,10 @@ var postSchema = new Schema({
     slug: String,
     autor: String,
     views: Number
-}, {collection:'posts'}) // Informa para o banco que é pra inserir esse Schema("tabela") em um BD já existente
+}, {
+    versionKey: false
+    }, // Desativa o campo __v
+ {collection:'posts'}) // Informa para o banco que é pra inserir esse Schema("tabela") em um BD já existente
 
 // Cria um MODELO chamado Posts de acordo com o Schema postSchema feito anteriormente
 var Posts = mongoose.model("Posts", postSchema);

@@ -82,11 +82,17 @@
         <div class="header-panel">
             <h2>Listando Notícias</h2>
         </div><!--header-painel-->
-
-        <div class="noticia-single">
-            <p>Título Notícia: Minha Notícia</p>
-            <a href="/admin/deletar/10">(X)</a>
-        </div><!--noticia-single-->
     </div><!--container-->
+
+    <!--Looping for(ultimas single)-->
+    <% for(let i = 0; i < posts.length; i++){ %>
+
+            <div class="noticia-single">
+                <p>Título Notícia: <%= posts[i].titulo %></p>
+                <a href="/admin/deletar/<%= posts[i].id %>">(X)</a>
+            </div><!--noticia-single-->
+            
+    <% } %><!--Looping for(ultimas single)-->
+
 </body>
 </html>

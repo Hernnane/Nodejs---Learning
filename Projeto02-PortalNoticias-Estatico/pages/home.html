@@ -39,22 +39,28 @@
                     <div class="mais-lidas">
                         <h3>Mais Lidas</h3>
                         <div class="mais-lidas-noticias">
-
-                            <!--Looping for(mais lidas)-->
-                            <% for(let i = 0; i < posts.length; i++){ %>
-                            <div class="mais-lida-noticia-single">
-                                <img src="<%= postsTop[i].imagem %>" />
-                                <div class="texto-mais-lida-single">
-                                    <h4><%= postsTop[i].titulo %></h4>
-                                    <p><%- postsTop[i].descricaoCurta %>...</p>
-                                    <span>(<%= postsTop[i].views %> views)</span>
-                                    <a href="<%= postsTop[i].slug %>">Saiba mais</a>
-                                </div><!--texto-mais-lida-single-->
-                            </div><!--mais-lida-noticia-single-->
-                            <% } %><!--Looping for(mais lidas)-->
-
-                        </div><!--mais-lidas-noticias-->
-                    </div><!--mais-lidas-->
+                            <!-- Loop para exibir as notícias mais lidas -->
+                            <% for(let i = 0; i < postsTop.length; i++){ %>
+                                <% if(postsTop[i]) { %> <!-- Verifica se o post atual existe para evitar erros -->
+                                <div class="mais-lida-noticia-single">
+                                    <!-- Imagem da notícia, usa uma imagem padrão se o campo imagem estiver vazio ou nulo -->
+                                    <img src="<%= postsTop[i].imagem || '/default/image/path.jpg' %>" />
+                                    <div class="texto-mais-lida-single">
+                                        <!-- Título da notícia -->
+                                        <h4><%= postsTop[i].titulo %></h4>
+                                        <!-- Descrição curta da notícia (primeiros 100 caracteres do conteúdo) -->
+                                        <p><%- postsTop[i].descricaoCurta %>...</p>
+                                        <!-- Exibição do número de visualizações -->
+                                        <span>(<%= postsTop[i].views %> views)</span>
+                                        <!-- Link para acessar a notícia completa -->
+                                        <a href="<%= postsTop[i].slug %>">Saiba mais</a>
+                                    </div><!-- texto-mais-lida-single -->
+                                </div><!-- mais-lida-noticia-single -->
+                                <% } %> <!-- Fim da validação para evitar erros -->
+                            <% } %> <!-- Fim do loop -->
+                        </div><!-- mais-lidas-noticias -->
+                    </div><!-- mais-lidas -->
+                    
                 </div><!--center-->
             </div><!--title-outras-noticia-->
         </section><!--outras-noticias-->
